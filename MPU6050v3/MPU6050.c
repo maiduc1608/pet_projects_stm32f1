@@ -7,6 +7,8 @@
 #include "myDelay.h"
 #include "myTimer.h"
 
+#define RedLedPin 1ul<<2;
+#define GreenLedPin 1ul<<13;
 #define MPU6050_ADDRESS 0x68
 #define acc_xh_addr 0x3B
 #define gyro_xh_addr 0x43
@@ -19,15 +21,15 @@
 #define pwr_manager 107
 #define accel_sensitivity 16384.0
 #define gyro_sensitivity 65.5
-#define SampleRate (uint8_t)5
+#define SampleRate (uint8_t)8
 
 #define FALL_THRESHOLD_LOW 25.0  // Ngu?ng gia t?c th?p d? phát hi?n roi t? do (0.5g)
 #define FALL_THRESHOLD_HIGH 150.0 // Ngu?ng gia t?c cao d? phát hi?n va ch?m (2.5g)
 #define GYRO_THRESHOLD 700.0    // Ngu?ng t?c d? góc d? phát hi?n ngã (300 degrees/second)
 
 enum STATE{
-	FALLED,
 	NORMAL,
+	FALLED,
 	STOP
 };
 
@@ -40,16 +42,14 @@ void MPU_read_register(uint8_t, uint8_t*);
 void MPU_read_multi(uint8_t reg_address,uint8_t size, uint8_t *buffer);
 void MPU_Display(void);
 void LCD_Display(void);
-void PinConfig(void);
+void LED_Init(void);
 void Enter_Stop_Mode(void);
 void EXTI2_IRQHandler(void);
 void TIMER_config(void);
 void TIM2_IRQHandler(void);
 void TIM3_IRQHandler(void);
-void MPU_Read(void);
+void Interrupt_Manager(void);
 int detectFall();
-
-void blinkRedLed(void);
 
 static uint8_t acc_buffer[6];
 static uint8_t gyro_buffer[6];
@@ -62,9 +62,6 @@ static float gz;
 static float total_acceleration;
 static float total_gyro;
 
-static uint8_t mode = 0;
-static uint8_t stop_mode = 0;
-
 static int system_started = 0;
 static int fall_detected = 0;
 static int in_free_fall = 0;
@@ -74,14 +71,11 @@ static int tick_count = 0;
 
 int main(void){
   SysClkConf_72MHz();
-  PinConfig();
+  LED_Init();
 	TIM2_Setup(7200,1000); //Red
-	TIM3_Setup(7200,5000);
-	TIM2_SetInterrupt(1);
-	TIM3_SetInterrupt(1);
+	TIM3_Setup(7200,5000); //Green
 	TIM3_GreenState(1);
   I2C1_Init();
-	
 	LCD_I2C_Init();
 	LCD_I2C_Clear();
 	LCD_Display();
@@ -91,30 +85,35 @@ int main(void){
 	Delay_ms(500);
 	EXTI_config();
 	system_started = 1;
+	Interrupt_Manager();
   while(1){
 		if(State == STOP){
 			Enter_Stop_Mode();
 			State = NORMAL;
 		}
 		if(State == NORMAL){
-			GPIOA->ODR &= ~(1<<2);
-			TIM2_RedState(0);
+			GPIOA->ODR ^= 1<<4;
 		}
 		else if(State == FALLED) {
 			TIM2_RedState(1);
-			while(1);
+			while(1){
+				if(State == STOP){
+					TIM2_RedState(0);
+					break;
+				}
+			}
 		}
 	}
 }
 
-void PinConfig(void){
-  RCC->APB2ENR |= 1<<4 | 1<<2; //GPIOA, C
+void LED_Init(void){
+	//enable clock for GPIOA, GPIOC
+  RCC->APB2ENR |= 1<<4 | 1<<2; 
   GPIOC->CRH &= ~(0xFUL<<20);
-  GPIOC->CRH |= 0x3<<20; // C13 output pp
+  GPIOC->CRH |= 0x3<<20; //C13 output pp
 	GPIOA->CRL &= ~(0xFul<<8);
 	GPIOA->CRL |= 0x3<<8; //A2 output pp
 }
-
 
 void EXTI_config(void){
 	RCC->APB2ENR |= 1<<0 | 1<<2; //en AFIO and GPIOA
@@ -127,16 +126,10 @@ void EXTI_config(void){
 	EXTI->EMR = 0;
 	EXTI->RTSR &= ~(1UL<<1 | 1ul<<0);
 	EXTI->FTSR |= 1<<1 | 1<<0;
-	NVIC_SetPriority(EXTI0_IRQn,0);
-	NVIC_SetPendingIRQ(EXTI0_IRQn);
-	NVIC_EnableIRQ(EXTI0_IRQn);
-	NVIC_SetPriority(EXTI1_IRQn,2);
-	NVIC_EnableIRQ(EXTI1_IRQn);
 }
 
 void Enter_Stop_Mode(void) {
   NVIC_DisableIRQ(EXTI1_IRQn);
-	
   RCC->APB1ENR |= 1<<28; //en PWR
 	// Clear Wake-up flag
   PWR->CR |= PWR_CR_CWUF;
@@ -162,6 +155,7 @@ void EXTI0_IRQHandler(void){
 
 void EXTI1_IRQHandler(void){
   if(EXTI->PR & 1<<1){
+		GPIOA->ODR ^= 1<<4;
 		MPU_read_multi(acc_xh_addr,6,acc_buffer);
 		MPU_read_multi(gyro_xh_addr,6,gyro_buffer);
     int16_t ax_raw = (int16_t)(acc_buffer[0] << 8 | acc_buffer[1]);
@@ -187,9 +181,6 @@ void EXTI1_IRQHandler(void){
 			if(State != STOP) State = FALLED;
 			fall_detected = 300;
     }
-		else{
-			if(State != STOP) State = NORMAL;
-		}
 		
 		if (in_free_fall) tick_count += SampleRate;
 		if (!detectFall() && tick_count > 1000) {
@@ -201,6 +192,7 @@ void EXTI1_IRQHandler(void){
   }
 	//clear pending bit
 	EXTI->PR |= 1 << 1;
+	GPIOA->ODR^=1<<4;
 }
 
 int detectFall() {
@@ -217,7 +209,6 @@ int detectFall() {
 			check_collide2 = 200;
 		}
 		if (check_collide1 && check_collide2) {
-			Delay_ms(200);
 			in_free_fall = 0;
 			check_collide1 = 0;
 			check_collide2 = 0;
@@ -261,7 +252,7 @@ void MPU_Init(void){
 void TIM2_IRQHandler(void){
 	if(TIM2->SR & 1UL<<0){
 		GPIOA->ODR ^= 1<<2;
-		TIM2->SR &= ~(1UL<<0);
+		TIM2->SR &= ~(1UL<<0); //clear interrupt flag
 	}
 }
 void TIM3_IRQHandler(void){
@@ -275,13 +266,13 @@ void MPU_Display(void){
 	//acc
 	char *c_acc = (char*)malloc(7*sizeof(char));
 	sprintf(c_acc,"%.2f",total_acceleration);
-	LCD_I2C_Location(0,6);
+	LCD_I2C_Location(0,5);
 	LCD_I2C_Write_String(c_acc);
 	free(c_acc);
 	//total_gyro
 	char *c_gyro = (char*)malloc(7*sizeof(char));
 	sprintf(c_gyro,"%.2f",total_gyro);
-	LCD_I2C_Location(1,7);
+	LCD_I2C_Location(1,6);
 	LCD_I2C_Write_String(c_gyro);
 	free(c_gyro);
 }
@@ -291,4 +282,15 @@ void LCD_Display(void){
 	LCD_I2C_Write_String("acc: ");
 	LCD_I2C_Location(1,0);
 	LCD_I2C_Write_String("gyro: ");
+}
+
+void Interrupt_Manager(void){
+	NVIC_SetPriority(TIM2_IRQn,1);
+	NVIC_EnableIRQ(TIM2_IRQn);
+	NVIC_SetPriority(TIM3_IRQn,1);
+	NVIC_EnableIRQ(TIM3_IRQn);
+	NVIC_SetPriority(EXTI1_IRQn,2);
+	NVIC_EnableIRQ(EXTI1_IRQn);
+	NVIC_SetPriority(EXTI0_IRQn,0);
+	NVIC_EnableIRQ(EXTI0_IRQn);
 }

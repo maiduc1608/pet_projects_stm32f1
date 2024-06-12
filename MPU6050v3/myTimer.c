@@ -17,7 +17,10 @@ void TIM2_DisInterrupt(void){
 }
 
 void TIM2_RedState(uint8_t status){
-	if(status==0) TIM2->CR1 &= ~(1U<<0);
+	if(status==0){
+		TIM2->CR1 &= ~(1U<<0);
+		GPIOA->ODR &= ~(1u<<2);
+	}
 	else TIM2->CR1 |= 1;
 }
 
