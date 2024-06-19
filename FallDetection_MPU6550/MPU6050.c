@@ -69,17 +69,20 @@ static int check_collide1 = 0;
 static int check_collide2 = 0;
 static int tick_count = 0;
 
-int main(void){
+`int main(void){
   SysClkConf_72MHz();
   LED_Init();
-	TIM2_Setup(7200,1000); //Red
-	TIM3_Setup(7200,5000); //Green
+	TIM2_Setup(7200,5000); //Red
+	TIM3_Setup(7200,10000); //Green
 	TIM3_GreenState(1);
   I2C1_Init();
 	LCD_I2C_Init();
 	LCD_I2C_Clear();
 	LCD_Display();
   MPU_Init();
+	Delay_ms(50);
+	MPU_Init();
+	Delay_ms(50);
 	EXTI_config();
 	system_started = 1;
 	Interrupt_Manager();
@@ -124,7 +127,7 @@ void EXTI_config(void){
 	EXTI->IMR |= 1<<0|1<<1;
 	EXTI->EMR = 0;
 	EXTI->RTSR &= ~(1UL<<1 | 1ul<<0);
-	EXTI->FTSR |= 1<<1 | 1<<0;
+	EXTI->FTSR |= 1<<1 | 1<<0;  //falling trigger selected
 }
 
 void Enter_Stop_Mode(void) {
@@ -162,7 +165,7 @@ void EXTI1_IRQHandler(void){
     ax = (float)ax_raw / accel_sensitivity;
     ay = (float)ay_raw / accel_sensitivity;
     az = (float)az_raw / accel_sensitivity;
-		az -= 0.2;
+		az -= 0.1;
 		
     int16_t gx_raw = (int16_t)(gyro_buffer[0] << 8 | gyro_buffer[1]);
     int16_t gy_raw = (int16_t)(gyro_buffer[2] << 8 | gyro_buffer[3]);
@@ -187,7 +190,7 @@ void EXTI1_IRQHandler(void){
 			} 
 			
 			if (in_free_fall) tick_count += SampleRate;
-			if (!detectFall() && tick_count > 1000) {
+			if (!detectFall() && tick_count > 600) {
 				tick_count = 0;
 				in_free_fall = 0;
 				check_collide1 = 0;
@@ -252,8 +255,8 @@ void MPU_read_multi(uint8_t reg_address,uint8_t size, uint8_t *buffer){
 
 void MPU_Init(void){
 	I2C1_send1Byte(MPU6050_ADDRESS, sample_rate,SampleRate - 1);
-  I2C1_send1Byte(MPU6050_ADDRESS, config, 5u);
-  I2C1_send1Byte(MPU6050_ADDRESS, gyro_config, 0x08); // ±500°/s
+  I2C1_send1Byte(MPU6050_ADDRESS, config, 0x29); //FSYNC = acc_x, DLPF = 1
+  I2C1_send1Byte(MPU6050_ADDRESS, gyro_config, 0x10); // ±1000°/s
   I2C1_send1Byte(MPU6050_ADDRESS, acc_config, 0x00);
   I2C1_send1Byte(MPU6050_ADDRESS, Level_INT, 0x80);
   I2C1_send1Byte(MPU6050_ADDRESS, interrupts, 1u);
