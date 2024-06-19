@@ -69,7 +69,7 @@ static int check_collide1 = 0;
 static int check_collide2 = 0;
 static int tick_count = 0;
 
-`int main(void){
+int main(void){
   SysClkConf_72MHz();
   LED_Init();
 	TIM2_Setup(7200,5000); //Red
