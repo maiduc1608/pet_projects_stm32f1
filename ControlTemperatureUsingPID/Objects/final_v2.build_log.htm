@@ -1,0 +1,335 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: µVision V5.39.0.0
+Copyright (C) 2023 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: duc mai, abc, LIC=----
+ 
+Tool Versions:
+Toolchain:       MDK-Lite  Version: 5.39.0.0
+Toolchain Path:  C:\Keil_v5\ARM\ARMCLANG\Bin
+C Compiler:      ArmClang.exe V6.21
+Assembler:       Armasm.exe V6.21
+Linker/Locator:  ArmLink.exe V6.21
+Library Manager: ArmAr.exe V6.21
+Hex Converter:   FromElf.exe V6.21
+CPU DLL:         SARMCM3.DLL V5.39.0.0
+Dialog DLL:      DCM.DLL V1.17.5.0
+Target DLL:      UL2CM3.DLL V1.164.9.0
+Dialog DLL:      TCM.DLL V1.56.4.0
+ 
+<h2>Project:</h2>
+E:\UET_CN2\3_junior\HK2\co_so_do_luong\Fsoft project\project\2324II_ELT3207-Team20Project\ControlTemperatureUsingPID\TempControl.uvprojx
+Project File Date:  05/30/2024
+
+<h2>Output:</h2>
+*** Using Compiler 'V6.21', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
+Build target 'Target 1'
+myPID.c(1): warning: In file included from...
+./myPID.h(4): warning: In file included from...
+C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include\stm32f10x.h(18): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   18 |   *              - To use or not the peripheral<92>s drivers in application code(i.e. 
+      |                                                ^
+C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include\stm32f10x.h(19): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   19 |   *                code will be based on direct access to peripheral<92>s registers 
+      |                                                                     ^
+C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include\stm32f10x.h(26): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   26 |   *           - Macros to access peripheral<92>s registers hardware
+      |                                            ^
+myPID.c(1): warning: In file included from...
+./myPID.h(5): warning: In file included from...
+./myPWM.h(8): warning: no newline at end of file [-Wnewline-eof]
+    8 | #endif 
+      |        ^
+myPID.c(1): warning: In file included from...
+./myPID.h(9): warning: no newline at end of file [-Wnewline-eof]
+    9 | #endif
+      |       ^
+myPID.c(25): warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+   25 |     double error_derivative = (error - last_error)/2;
+      |            ^
+6 warnings generated.
+compiling myPID.c...
+myLCD.c(1): warning: In file included from...
+./myLCD.h(4): warning: In file included from...
+C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include\stm32f10x.h(18): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   18 |   *              - To use or not the peripheral<92>s drivers in application code(i.e. 
+      |                                                ^
+C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include\stm32f10x.h(19): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   19 |   *                code will be based on direct access to peripheral<92>s registers 
+      |                                                                     ^
+C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include\stm32f10x.h(26): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   26 |   *           - Macros to access peripheral<92>s registers hardware
+      |                                            ^
+myLCD.c(1): warning: In file included from...
+./myLCD.h(7): warning: In file included from...
+./myDelay.h(8): warning: no newline at end of file [-Wnewline-eof]
+    8 | #endif
+      |       ^
+myLCD.c(1): warning: In file included from...
+./myLCD.h(23): warning: no newline at end of file [-Wnewline-eof]
+   23 | #endif
+      |       ^
+myLCD.c(48): warning: implicit conversion loses integer precision: 'int' to 'uint16_t' (aka 'unsigned short') [-Wimplicit-int-conversion]
+   48 |     I2C1->DR = address << 1;  // Send slave address and write bit (0 = write)
+      |              ~ ~~~~~~~~^~~~
+myLCD.c(70): warning: implicit conversion loses integer precision: 'int' to 'uint8_t' (aka 'unsigned char') [-Wimplicit-int-conversion]
+   66 |     uint8_t buf[4] = {
+      |                      ~
+   67 |         (data & 0xF0) | 0x04,  // Send high nibble with E=1
+   68 |         (data & 0xF0),         // Send high nibble with E=0
+   69 |         (data << 4) | 0x04,    // Send low nibble with E=1
+   70 |         (data << 4)            // Send low nibble with E=0
+      |          ~~~~~^~~~
+myLCD.c(69): warning: implicit conversion loses integer precision: 'int' to 'uint8_t' (aka 'unsigned char') [-Wimplicit-int-conversion]
+   66 |     uint8_t buf[4] = {
+      |                      ~
+   67 |         (data & 0xF0) | 0x04,  // Send high nibble with E=1
+   68 |         (data & 0xF0),         // Send high nibble with E=0
+   69 |         (data << 4) | 0x04,    // Send low nibble with E=1
+      |         ~~~~~~~~~~~~^~~~~~
+myLCD.c(81): warning: implicit conversion loses integer precision: 'int' to 'uint8_t' (aka 'unsigned char') [-Wimplicit-int-conversion]
+   77 |     uint8_t buf[4] = {
+      |                      ~
+   78 |         (data & 0xF0) | 0x05,  // Send high nibble with E=1 and RS=1
+   79 |         (data & 0xF0) | 0x01,  // Send high nibble with E=0 and RS=1
+   80 |         (data << 4) | 0x05,    // Send low nibble with E=1 and RS=1
+   81 |         (data << 4) | 0x01     // Send low nibble with E=0 and RS=1
+      |         ~~~~~~~~~~~~^~~~~~
+myLCD.c(80): warning: implicit conversion loses integer precision: 'int' to 'uint8_t' (aka 'unsigned char') [-Wimplicit-int-conversion]
+   77 |     uint8_t buf[4] = {
+      |                      ~
+   78 |         (data & 0xF0) | 0x05,  // Send high nibble with E=1 and RS=1
+   79 |         (data & 0xF0) | 0x01,  // Send high nibble with E=0 and RS=1
+   80 |         (data << 4) | 0x05,    // Send low nibble with E=1 and RS=1
+      |         ~~~~~~~~~~~~^~~~~~
+myLCD.c(125): warning: no newline at end of file [-Wnewline-eof]
+  125 | }
+      |  ^
+myLCD.c(59): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   59 |         I2C1_Write(buffer[i]);  // Write each byte in the buffer
+      |                    ^~~~~~
+myLCD.c(116): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  116 |         LCD_I2C_Write_DATA(string[i]);  // Send each character
+      |                            ^~~~~~
+13 warnings generated.
+compiling myLCD.c...
+main.c(1): warning: In file included from...
+C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include\stm32f10x.h(18): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   18 |   *              - To use or not the peripheral<92>s drivers in application code(i.e. 
+      |                                                ^
+C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include\stm32f10x.h(19): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   19 |   *                code will be based on direct access to peripheral<92>s registers 
+      |                                                                     ^
+C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include\stm32f10x.h(26): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   26 |   *           - Macros to access peripheral<92>s registers hardware
+      |                                            ^
+main.c(5): warning: In file included from...
+./mySystemClockConfig.h(8): warning: no newline at end of file [-Wnewline-eof]
+    8 | #endif 
+      |        ^
+main.c(6): warning: In file included from...
+./myDelay.h(8): warning: no newline at end of file [-Wnewline-eof]
+    8 | #endif
+      |       ^
+main.c(7): warning: In file included from...
+./myUART.h(8): warning: no newline at end of file [-Wnewline-eof]
+    8 | #endif
+      |       ^
+main.c(8): warning: In file included from...
+./myPID.h(5): warning: In file included from...
+./myPWM.h(8): warning: no newline at end of file [-Wnewline-eof]
+    8 | #endif 
+      |        ^
+main.c(8): warning: In file included from...
+./myPID.h(9): warning: no newline at end of file [-Wnewline-eof]
+    9 | #endif
+      |       ^
+main.c(9): warning: In file included from...
+./myLCD.h(23): warning: no newline at end of file [-Wnewline-eof]
+   23 | #endif
+      |       ^
+main.c(111): warning: while loop has empty body [-Wempty-body]
+  111 |         while ((GPIOA->IDR & 1<<0) == 0);
+      |                                         ^
+main.c(111): note: put the semicolon on a separate line to silence this warning
+main.c(122): warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+  122 |                 uint16_t tick_count=0;
+      |                          ^
+main.c(150): warning: implicit conversion loses integer precision: 'volatile uint16_t' (aka 'volatile unsigned short') to 'char' [-Wimplicit-int-conversion]
+  150 |                 char receive_char = USART1->DR; 
+      |                      ~~~~~~~~~~~~   ~~~~~~~~^~
+main.c(201): warning: no newline at end of file [-Wnewline-eof]
+  201 | }
+      |  ^
+main.c(183): warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+  183 |         char c_temp[4];
+      |              ^
+main.c(59): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   59 |                         dht_data[i] = ReadDHT();
+      |                         ^~~~~~~~
+main.c(62): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   62 |     humidity_decimal = dht_data[1];
+      |                        ^~~~~~~~
+main.c(63): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   63 |     temperature_integer = dht_data[2];
+      |                           ^~~~~~~~
+main.c(64): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   64 |     temperature_decimal = dht_data[3];
+      |                           ^~~~~~~~
+main.c(65): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   65 |     checksum = dht_data[4];
+      |                ^~~~~~~~
+main.c(72): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   72 |                 DHT_DATA[1] = humid;
+      |                 ^~~~~~~~
+main.c(139): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  139 |     int humidity = (int)(Data[1] * 10);
+      |                          ^~~~
+main.c(151): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  151 |                 uart_receive[uart_index]=receive_char;
+      |                 ^~~~~~~~~~~~
+main.c(154): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  154 |                         uart_receive[4]=0;
+      |                         ^~~~~~~~~~~~
+main.c(157): warning: unsafe pointer arithmetic [-Wunsafe-buffer-usage]
+  157 |                                         convertStringToDecimal(uart_receive+1,&humid_setpoint);
+      |                                                                ^~~~~~~~~~~~
+main.c(161): warning: unsafe pointer arithmetic [-Wunsafe-buffer-usage]
+  161 |                                         convertStringToDecimal(uart_receive+1,&temp_setpoint);
+      |                                                                ^~~~~~~~~~~~
+main.c(165): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  165 |                                         if(uart_receive[3]=='f') GPIOA->ODR ^= fanPin;
+      |                                            ^~~~~~~~~~~~
+main.c(169): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  169 |                                         if(uart_receive[3]=='f') GPIOA->ODR ^= mistPin;
+      |                                            ^~~~~~~~~~~~
+27 warnings generated.
+compiling main.c...
+myUART.c(1): warning: In file included from...
+./myUART.h(4): warning: In file included from...
+C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include\stm32f10x.h(18): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   18 |   *              - To use or not the peripheral<92>s drivers in application code(i.e. 
+      |                                                ^
+C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include\stm32f10x.h(19): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   19 |   *                code will be based on direct access to peripheral<92>s registers 
+      |                                                                     ^
+C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include\stm32f10x.h(26): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   26 |   *           - Macros to access peripheral<92>s registers hardware
+      |                                            ^
+myUART.c(1): warning: In file included from...
+./myUART.h(8): warning: no newline at end of file [-Wnewline-eof]
+    8 | #endif
+      |       ^
+myUART.c(25): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   25 |   while (data[i] != 'e') {
+      |          ^~~~
+myUART.c(28): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   28 |     USART1->DR = data[i++];
+      |                  ^~~~
+6 warnings generated.
+compiling myUART.c...
+mySystemClockConfig.c(1): warning: In file included from...
+./mySystemClockConfig.h(4): warning: In file included from...
+C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include\stm32f10x.h(18): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   18 |   *              - To use or not the peripheral<92>s drivers in application code(i.e. 
+      |                                                ^
+C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include\stm32f10x.h(19): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   19 |   *                code will be based on direct access to peripheral<92>s registers 
+      |                                                                     ^
+C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include\stm32f10x.h(26): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   26 |   *           - Macros to access peripheral<92>s registers hardware
+      |                                            ^
+mySystemClockConfig.c(1): warning: In file included from...
+./mySystemClockConfig.h(8): warning: no newline at end of file [-Wnewline-eof]
+    8 | #endif 
+      |        ^
+mySystemClockConfig.c(25): warning: implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned int') [-Wsign-conversion]
+   25 |         RCC->CR &= ~(0x01); // off HSION
+      |                 ~~ ^~~~~~~
+mySystemClockConfig.c(27): warning: no newline at end of file [-Wnewline-eof]
+   27 | }
+      |  ^
+6 warnings generated.
+compiling mySystemClockConfig.c...
+myPWM.c(1): warning: In file included from...
+./myPWM.h(4): warning: In file included from...
+C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include\stm32f10x.h(18): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   18 |   *              - To use or not the peripheral<92>s drivers in application code(i.e. 
+      |                                                ^
+C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include\stm32f10x.h(19): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   19 |   *                code will be based on direct access to peripheral<92>s registers 
+      |                                                                     ^
+C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include\stm32f10x.h(26): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   26 |   *           - Macros to access peripheral<92>s registers hardware
+      |                                            ^
+myPWM.c(1): warning: In file included from...
+./myPWM.h(8): warning: no newline at end of file [-Wnewline-eof]
+    8 | #endif 
+      |        ^
+myPWM.c(28): warning: no newline at end of file [-Wnewline-eof]
+   28 |         }
+      |          ^
+5 warnings generated.
+compiling myPWM.c...
+RTE/Device/STM32F103C8/system_stm32f10x.c(64): warning: In file included from...
+C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include\stm32f10x.h(18): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   18 |   *              - To use or not the peripheral<92>s drivers in application code(i.e. 
+      |                                                ^
+C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include\stm32f10x.h(19): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   19 |   *                code will be based on direct access to peripheral<92>s registers 
+      |                                                                     ^
+C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include\stm32f10x.h(26): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   26 |   *           - Macros to access peripheral<92>s registers hardware
+      |                                            ^
+RTE/Device/STM32F103C8/system_stm32f10x.c(166): warning: no previous extern declaration for non-static variable 'AHBPrescTable' [-Wmissing-variable-declarations]
+  166 | __I uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
+      |             ^
+RTE/Device/STM32F103C8/system_stm32f10x.c(166): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+  166 | __I uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
+      |     ^
+RTE/Device/STM32F103C8/system_stm32f10x.c(408): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  408 |   tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];
+      |         ^~~~~~~~~~~~~
+5 warnings generated.
+compiling system_stm32f10x.c...
+linking...
+Program Size: Code=14984 RO-data=856 RW-data=16 ZI-data=1744  
+FromELF: creating hex file...
+".\Objects\final_v2.axf" - 0 Error(s), 68 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.9.0.pack
+                ARM::CMSIS@5.9.0
+                CMSIS (Common Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.6.0
+
+Package Vendor: Keil
+                https://www.keil.com/pack/Keil.STM32F1xx_DFP.2.4.1.pack
+                Keil::STM32F1xx_DFP@2.4.1
+                STMicroelectronics STM32F1 Series Device Support, Drivers and Examples
+   * Component: Startup Version: 1.0.0
+
+<h2>Collection of Component include folders:</h2>
+  ./RTE/Device/STM32F103C8
+  ./RTE/_Target_1
+  C:/Users/maidu/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include
+  C:/Users/maidu/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE@5.6.0
+
+   * Component: Keil::Device:Startup@1.0.0
+      Source file:   Device/Source/ARM/startup_stm32f10x_md.s
+      Source file:   Device/Source/system_stm32f10x.c
+      Include file:  RTE_Driver/Config/RTE_Device.h
+      Source file:   Device/Source/ARM/STM32F1xx_OPT.s
+Build Time Elapsed:  00:00:01
+</pre>
+</body>
+</html>
